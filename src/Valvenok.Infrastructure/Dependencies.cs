@@ -25,7 +25,6 @@ namespace Valvenok.Infrastructure
                         maxRetryDelay: TimeSpan.FromSeconds(30),
                         errorNumbersToAdd: null);
                 }));
-
             services.Configure<MongoDbSettings>(configuration.GetSection("MongoDB"));
             services.AddSingleton<IMongoClient>(sp =>
             {

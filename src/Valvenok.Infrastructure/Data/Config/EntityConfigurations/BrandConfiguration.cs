@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Valvenok.Core.Entities.Products;
 
 namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
