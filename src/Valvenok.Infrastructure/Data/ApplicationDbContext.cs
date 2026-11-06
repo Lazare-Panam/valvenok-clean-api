@@ -14,10 +14,16 @@ namespace Valvenok.Infrastructure.Data
 
         }
         public DbSet<Brands> Brands => Set<Brands>();
+        public DbSet<Category> Categories => Set<Category>();
+        public DbSet<CatalogProduct> CatalogProducts => Set<CatalogProduct>();
+        public DbSet<Filter> Filters => Set<Filter>();
+        public DbSet<CategoryFilter> CategoryFilters => Set<CategoryFilter>();
+        public DbSet<ProductFilterValue> ProductFilterValues => Set<ProductFilterValue>();
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfiguration(new BrandConfiguration());
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }
