@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Valvenok.Api/Valvenok.Api.csproj" />
+    <Project Path="src/Valvenok.Core/Valvenok.Core.csproj" />
+    <Project Path="src/Valvenok.Infrastructure/Valvenok.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Valvenok.UnitTests/Valvenok.UnitTests.csproj" />
+  </Folder>
+</Solution>

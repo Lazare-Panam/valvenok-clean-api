@@ -1,0 +1,6 @@
+@Valvenok.Api_HostAddress = http://localhost:5067
+
+GET {{Valvenok.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
