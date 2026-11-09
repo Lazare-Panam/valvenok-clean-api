@@ -11,3 +11,20 @@ variable "location" {
   description = "Region for the resource group."
   default     = "uksouth"
 }
+
+variable "sql_server_name" {
+  type        = string
+  description = "SQL Server name"
+  default     = "panamv"
+}
+variable "sql_server_resource_group" {
+  type        = string
+  description = "SQL Server Resource Group Name"
+  default     = "rg-pv-dev"
+}
+variable "sql_database_name" {
+  type        = string
+  description = "Azure SQL Database Name"
+  default     = "ValvenokClean"
+}
+
