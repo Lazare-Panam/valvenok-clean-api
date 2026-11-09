@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Valvenok.Core.Entities.Content;
 using Valvenok.Core.Interfaces.Repositories;

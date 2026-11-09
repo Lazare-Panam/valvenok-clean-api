@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Valvenok.Infrastructure.Data;
 using Valvenok.Infrastructure.Settings;
 using MongoDB.Driver;
+using Valvenok.Core.Interfaces.Repositories;
+using Valvenok.Infrastructure.Repository;
 namespace Valvenok.Infrastructure
 {
     public static class Dependencies
@@ -25,12 +27,25 @@ namespace Valvenok.Infrastructure
                         maxRetryDelay: TimeSpan.FromSeconds(30),
                         errorNumbersToAdd: null);
                 }));
+            var mongoConn = configuration.GetSection("MongoDB")["ConnectionString"];
+            if (string.IsNullOrEmpty(mongoConn))
+            {
+                throw new InvalidOperationException(
+                    "MongoDB connection string is missing. Set 'MongoDB:ConnectionString' in user-secrets " +
+                    "or the 'MongoDB__ConnectionString' environment variable.");
+            }
             services.Configure<MongoDbSettings>(configuration.GetSection("MongoDB"));
             services.AddSingleton<IMongoClient>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
                 return new MongoClient(settings.ConnectionString);
             });
+            services.AddSingleton<IMongoDatabase>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+                return sp.GetRequiredService<IMongoClient>().GetDatabase(settings.DatabaseName);
+            });
+            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
         }
     }
 }
