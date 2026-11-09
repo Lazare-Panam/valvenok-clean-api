@@ -1,0 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Valvenok.Core.Entities.Products;
+
+namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
+{
+    public class FilterConfiguration : IEntityTypeConfiguration<Filter>
+    {
+        public void Configure(EntityTypeBuilder<Filter> builder)
+        {
+            builder.HasKey(f => f.FilterId);
+
+            builder.Property(f => f.Name).HasMaxLength(100).IsRequired();
+            builder.HasIndex(f => f.Name).IsUnique();
+        }
+    }
+}

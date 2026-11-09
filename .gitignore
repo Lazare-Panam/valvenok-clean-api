@@ -480,3 +480,19 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+tfplan
+*.tfplan
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# Keep .terraform.lock.hcl committed (pins provider versions) — do NOT ignore it
