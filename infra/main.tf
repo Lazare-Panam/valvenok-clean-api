@@ -31,6 +31,7 @@ resource "azurerm_mssql_database" "db" {
   sku_name    = "Basic"
   max_size_gb = 2
   collation   = "SQL_Latin1_General_CP1_CI_AS"
+  storage_account_type = "Local"
 }
 resource "azurerm_mssql_firewall_rule" "example" {
   name             = "FirewallRuleValvenokDB"

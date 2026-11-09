@@ -8,7 +8,7 @@ namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CatalogProduct> builder)
         {
-            builder.HasKey(p => p.ProductId);
+            builder.HasKey(p => p.CatalogProductId);
 
             builder.Property(p => p.PartNumber).HasMaxLength(100).IsRequired();
             builder.HasIndex(p => p.PartNumber).IsUnique();

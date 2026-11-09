@@ -8,7 +8,7 @@ namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<ProductFilterValue> builder)
         {
-            builder.HasKey(v => v.Id);
+            builder.HasKey(v => v.ProductFilterValueId);
 
             builder.Property(v => v.Value).HasMaxLength(200).IsRequired();
 
