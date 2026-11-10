@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Valvenok.Infrastructure.Data;
-using Valvenok.Infrastructure.Settings;
 using MongoDB.Driver;
 using Valvenok.Core.Interfaces.Repositories;
 using Valvenok.Infrastructure.Repository;
+using Valvenok.Infrastructure.Data.Config.Settings;
 namespace Valvenok.Infrastructure
 {
     public static class Dependencies

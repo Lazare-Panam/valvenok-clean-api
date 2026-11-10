@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Valvenok.Infrastructure.Settings
+﻿namespace Valvenok.Infrastructure.Data.Config.Settings
 {
     public class QueueSettings
     {

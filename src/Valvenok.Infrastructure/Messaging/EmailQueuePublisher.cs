@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using Valvenok.Core.Entities.Messaging;
 using Valvenok.Core.Interfaces;
-using Valvenok.Infrastructure.Settings;
+using Valvenok.Infrastructure.Data.Config.Settings;
 
 namespace Valvenok.Infrastructure.Messaging
 {
