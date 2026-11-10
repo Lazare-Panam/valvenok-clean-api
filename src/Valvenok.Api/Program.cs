@@ -25,7 +25,6 @@ try
     app.UseAuthorization();
     app.MapControllers();
     app.MapHealthChecks("/health");
-    app.MapGet("/", () => "Hello from Serilog!");
     Log.Information("Server started and ready.");
     app.Run();
 }
