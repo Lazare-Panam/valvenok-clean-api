@@ -13,7 +13,7 @@ namespace Valvenok.Infrastructure.Data
         {
 
         }
-        public DbSet<Brands> Brands => Set<Brands>();
+        public DbSet<Brand> Brands => Set<Brand>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<CatalogProduct> CatalogProducts => Set<CatalogProduct>();
         public DbSet<Filter> Filters => Set<Filter>();
