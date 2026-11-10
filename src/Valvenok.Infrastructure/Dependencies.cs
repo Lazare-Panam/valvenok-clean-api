@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Valvenok.Infrastructure.Data;
 using Valvenok.Infrastructure.Settings;
 using MongoDB.Driver;
@@ -46,6 +45,13 @@ namespace Valvenok.Infrastructure
                 return sp.GetRequiredService<IMongoClient>().GetDatabase(settings.DatabaseName);
             });
             services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
+        }
+        public static IServiceCollection AddAppHealthChecks(this IServiceCollection services)
+        {
+            services.AddHealthChecks()
+                    .AddMongoDb(clientFactory: sp => sp.GetRequiredService<IMongoClient>())
+                    .AddDbContextCheck<ApplicationDbContext>(); ;
+            return services;
         }
     }
 }

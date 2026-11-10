@@ -1,26 +1,38 @@
+using Serilog;
 using Valvenok.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.ConfigureDatabases(builder.Configuration);
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
+try
 {
-    app.MapOpenApi();
+    Log.Information("Starting server.");
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddSerilog((services, lc) => lc
+        .ReadFrom.Configuration(builder.Configuration)
+        .ReadFrom.Services(services));
+    builder.Services.AddControllers();
+    builder.Services.AddOpenApi();
+    builder.Services.ConfigureDatabases(builder.Configuration);
+    builder.Services.AddAppHealthChecks();
+    var app = builder.Build();
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapOpenApi();
+    }
+    app.UseSerilogRequestLogging();
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.MapControllers();
+    app.MapHealthChecks("/health");
+    Log.Information("Server started and ready.");
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Server terminated unexpectedly.");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
