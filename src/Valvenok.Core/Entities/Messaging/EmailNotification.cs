@@ -1,6 +1,4 @@
 ﻿
-using System.Xml.Linq;
-
 namespace Valvenok.Core.Entities.Messaging
 {
     public record EmailNotification
@@ -15,7 +13,7 @@ namespace Valvenok.Core.Entities.Messaging
             ArgumentException.ThrowIfNullOrWhiteSpace(htmlBody);
             Email = email.Trim();
             Subject = subject.Trim();
-            HtmlBody = subject.Trim();
+            HtmlBody = htmlBody.Trim();
         }
     }
 }

@@ -12,15 +12,11 @@ namespace Valvenok.Infrastructure.Messaging
     {
         private readonly QueueClient _queueClient;
         private readonly ILogger<EmailQueuePublisher> _logger;
-
-        public EmailQueuePublisher(IOptions<QueueSettings> options, ILogger<EmailQueuePublisher> logger)
+        public EmailQueuePublisher(QueueClient queueClient, ILogger<EmailQueuePublisher> logger)
         {
-            var settings = options.Value;
-            var queueOptions = new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 };
-            _queueClient = new QueueClient(settings.ConnectionString, settings.QueueName, queueOptions);
+            _queueClient = queueClient;
             _logger = logger;
         }
-
         public async Task EnqueueAsync(EmailNotification message, CancellationToken ct = default)
         {
             await _queueClient.CreateIfNotExistsAsync(cancellationToken: ct);

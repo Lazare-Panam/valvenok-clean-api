@@ -14,7 +14,8 @@ try
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
     builder.Services.ConfigureDatabases(builder.Configuration);
-    builder.Services.AddAppHealthChecks();
+    builder.Services.ConfigureAppHealthChecks();
+    builder.Services.ConfigureAzure(builder.Configuration);
     var app = builder.Build();
     if (app.Environment.IsDevelopment())
     {
