@@ -23,7 +23,7 @@ namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
             builder.HasOne<Brand>()
                    .WithMany()
                    .HasForeignKey(p => p.BrandId)
-                   .OnDelete(DeleteBehavior.SetNull);
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(p => p.CategoryId);
             builder.HasIndex(p => p.BrandId);

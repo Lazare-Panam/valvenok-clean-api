@@ -52,7 +52,6 @@ namespace Valvenok.Infrastructure
             services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
             return services;
         }
-       
         public static IServiceCollection ConfigureAppHealthChecks(this IServiceCollection services)
         {
             services.AddHealthChecks()
@@ -70,6 +69,7 @@ namespace Valvenok.Infrastructure
                 throw new InvalidOperationException(
                     "Azure Storage connection string is missing. Set 'AzureStorage:ConnectionString' in user-secrets " +
                     "or the 'AzureStorage__ConnectionString' environment variable.");
+
             if (string.IsNullOrEmpty(queueConnection))
                 throw new InvalidOperationException(
                     "Queue connection string is missing. Set 'Queue:ConnectionString' in user-secrets " +
@@ -84,14 +84,9 @@ namespace Valvenok.Infrastructure
             services.AddAzureClients(clientBuilder =>
             {
                 clientBuilder.AddBlobServiceClient(storageConnection);
-                clientBuilder.AddClient<QueueClient, QueueClientOptions>((options, _, _) =>
-                {
-                    options.MessageEncoding = QueueMessageEncoding.Base64;
-                    return new QueueClient(queueConnection, queueName, options);
-                });
+                clientBuilder.AddQueueServiceClient(queueConnection).ConfigureOptions(options => options.MessageEncoding = QueueMessageEncoding.Base64);
             });
 
-          
             services.AddScoped<IFileStorage, AzureBlobStorage>();
             services.AddScoped<INotificationPublisher, EmailQueuePublisher>();
 

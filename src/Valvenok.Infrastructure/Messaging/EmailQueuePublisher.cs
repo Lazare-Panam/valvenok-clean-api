@@ -12,9 +12,10 @@ namespace Valvenok.Infrastructure.Messaging
     {
         private readonly QueueClient _queueClient;
         private readonly ILogger<EmailQueuePublisher> _logger;
-        public EmailQueuePublisher(QueueClient queueClient, ILogger<EmailQueuePublisher> logger)
+        private const string queueName = "notifications";
+        public EmailQueuePublisher(QueueServiceClient queueServiceClient, ILogger<EmailQueuePublisher> logger)
         {
-            _queueClient = queueClient;
+            _queueClient = queueServiceClient.GetQueueClient(queueName);
             _logger = logger;
         }
         public async Task EnqueueAsync(EmailNotification message, CancellationToken ct = default)
