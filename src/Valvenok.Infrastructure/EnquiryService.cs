@@ -19,7 +19,6 @@ namespace Valvenok.Infrastructure
 
         public async Task CreateEnquiry(CreateEnquiryRequest enquiryRequest, CancellationToken ct)
         {
-            ArgumentNullException.ThrowIfNull(enquiryRequest);
             var enquiry = new Enquiry(
                 enquiryRequest.Name,
                 enquiryRequest.Subject,
