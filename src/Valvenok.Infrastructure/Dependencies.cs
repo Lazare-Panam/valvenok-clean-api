@@ -7,9 +7,11 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Valvenok.Core.Interfaces;
 using Valvenok.Core.Interfaces.Repositories;
+using Valvenok.Core.Interfaces.Users;
 using Valvenok.Infrastructure.Data;
 using Valvenok.Infrastructure.Data.Config.Settings;
 using Valvenok.Infrastructure.Messaging;
+using Valvenok.Infrastructure.Notification;
 using Valvenok.Infrastructure.Repository;
 using Valvenok.Infrastructure.Storage;
 namespace Valvenok.Infrastructure
@@ -88,8 +90,11 @@ namespace Valvenok.Infrastructure
             });
 
             services.AddScoped<IFileStorage, AzureBlobStorage>();
-            services.AddScoped<INotificationPublisher, EmailQueuePublisher>();
-
+            services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
+            services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+            services.AddScoped<IEnquiryService, EnquiryService>();
+            services.AddScoped<NotificationService>();
+            services.Configure<EmailSettings>(configuration.GetSection("Email"));
             return services;
         }
     }

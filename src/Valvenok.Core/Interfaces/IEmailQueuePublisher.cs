@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Valvenok.Core.Entities.Messaging;
 
 namespace Valvenok.Core.Interfaces
 {
-    public interface INotificationPublisher
+    public interface IEmailQueuePublisher
     {
         Task EnqueueAsync(EmailNotification message, CancellationToken ct = default);
     }

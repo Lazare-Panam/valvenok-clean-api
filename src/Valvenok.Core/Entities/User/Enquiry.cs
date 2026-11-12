@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Valvenok.Core.Entities.Enums;
+﻿using Valvenok.Core.Entities.Enums;
 using Valvenok.Core.Interfaces;
 
 namespace Valvenok.Core.Entities.User
@@ -13,10 +10,11 @@ namespace Valvenok.Core.Entities.User
         public string PhoneNo { get; private set; }
         public string Subject { get; private set; }
         public string Message { get; private set; }
+        public string Company { get; private set; }
         public string? AttachmentLink { get; private set; }
         public EnquiryStatus Status { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
-        public Enquiry(string name, string subject, string message, string email, string phoneNo, string? attachmentLink, DateTimeOffset createdAt)
+        public Enquiry(string name, string subject, string message, string email, string phoneNo, string? attachmentLink, DateTimeOffset createdAt, string company)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             ArgumentException.ThrowIfNullOrWhiteSpace(email);
@@ -31,6 +29,7 @@ namespace Valvenok.Core.Entities.User
             Status = EnquiryStatus.Received;
             AttachmentLink = attachmentLink;
             CreatedAt = createdAt;
+            Company = company;
         }
         public void MarkNotified() => Status = EnquiryStatus.Notified;
         public void MarkNotifiedFailed() => Status = EnquiryStatus.NotifyFailed;

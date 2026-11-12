@@ -6,7 +6,8 @@
         public string PhoneNo { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? AttachmentLink { get; set; }
-        public string? Subject { get; set; }
-        public string? Message { get; set; }
+        public string Subject { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public string Company { get; set; } = string.Empty;
     }
 }
