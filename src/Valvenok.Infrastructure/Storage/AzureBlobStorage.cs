@@ -1,9 +1,6 @@
-﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Valvenok.Core.Interfaces;
 using Valvenok.Infrastructure.Data.Config.Settings;
 

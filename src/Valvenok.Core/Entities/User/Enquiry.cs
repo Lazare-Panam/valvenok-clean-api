@@ -1,9 +1,9 @@
-﻿using Valvenok.Core.Entities.Enums;
+using Valvenok.Core.Entities.Enums;
 using Valvenok.Core.Interfaces;
 
 namespace Valvenok.Core.Entities.User
 {
-    public class Enquiry : BaseEntity , IAggregateRoot
+    public class Enquiry : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
         public string Email { get; private set; }

@@ -221,6 +221,10 @@ namespace Valvenok.Infrastructure.Migrations
                     b.Property<string>("AttachmentLink")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 

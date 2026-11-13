@@ -1,4 +1,4 @@
-﻿using Azure.Storage.Queues;
+using Azure.Storage.Queues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +18,7 @@ namespace Valvenok.Infrastructure
 {
     public static class Dependencies
     {
-        public static IServiceCollection  ConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrEmpty(connectionString))
@@ -51,14 +51,13 @@ namespace Valvenok.Infrastructure
                 var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
                 return sp.GetRequiredService<IMongoClient>().GetDatabase(settings.DatabaseName);
             });
-            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
             return services;
         }
         public static IServiceCollection ConfigureAppHealthChecks(this IServiceCollection services)
         {
             services.AddHealthChecks()
                     .AddMongoDb(clientFactory: sp => sp.GetRequiredService<IMongoClient>())
-                    .AddDbContextCheck<ApplicationDbContext>(); 
+                    .AddDbContextCheck<ApplicationDbContext>();
             return services;
         }
         public static IServiceCollection ConfigureAzure(this IServiceCollection services, IConfiguration configuration)
@@ -66,7 +65,7 @@ namespace Valvenok.Infrastructure
             var storageConnection = configuration.GetSection("AzureStorage")["ConnectionString"];
             var queueConnection = configuration.GetSection("Queue")["ConnectionString"];
             var queueName = configuration.GetSection("Queue")["QueueName"];
-           
+
             if (string.IsNullOrEmpty(storageConnection))
                 throw new InvalidOperationException(
                     "Azure Storage connection string is missing. Set 'AzureStorage:ConnectionString' in user-secrets " +
@@ -79,7 +78,7 @@ namespace Valvenok.Infrastructure
             if (string.IsNullOrEmpty(queueName))
                 throw new InvalidOperationException(
                     "Queue name is missing. Set 'Queue:QueueName' in appsettings.json.");
-           
+
             services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorage"));
             services.Configure<QueueSettings>(configuration.GetSection("Queue"));
 
@@ -88,13 +87,17 @@ namespace Valvenok.Infrastructure
                 clientBuilder.AddBlobServiceClient(storageConnection);
                 clientBuilder.AddQueueServiceClient(queueConnection).ConfigureOptions(options => options.MessageEncoding = QueueMessageEncoding.Base64);
             });
-
+            services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            return services;
+        }
+        public static IServiceCollection ConfigureInfraServices(this IServiceCollection services)
+        {
             services.AddScoped<IFileStorage, AzureBlobStorage>();
             services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
             services.AddScoped<IEmailTemplateService, EmailTemplateService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
-            services.AddScoped<NotificationService>();
-            services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
             return services;
         }
     }

@@ -1,6 +1,6 @@
+using System.Text.Json;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 using Valvenok.Core.Entities.Messaging;
 using Valvenok.Core.Interfaces;
 
@@ -11,13 +11,11 @@ namespace Valvenok.Infrastructure.Messaging
         private readonly QueueClient _queueClient;
         private readonly ILogger<EmailQueuePublisher> _logger;
         private const string queueName = "notifications";
-
         public EmailQueuePublisher(QueueServiceClient queueServiceClient, ILogger<EmailQueuePublisher> logger)
         {
             _queueClient = queueServiceClient.GetQueueClient(queueName);
             _logger = logger;
         }
-
         public async Task EnqueueAsync(EmailNotification message, CancellationToken ct = default)
         {
             await _queueClient.CreateIfNotExistsAsync(cancellationToken: ct);

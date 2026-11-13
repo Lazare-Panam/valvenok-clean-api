@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Valvenok.Core.Entities.Products;
 using Valvenok.Core.Entities.User;
 

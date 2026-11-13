@@ -1,4 +1,3 @@
-using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Valvenok.Api.DTO;
@@ -23,6 +22,7 @@ namespace Valvenok.API.Controllers
         [HttpPost("enquiry")]
         public async Task<IActionResult> SendEnquiry([FromBody] CreateEnquiryRequest enquiryRequest, CancellationToken ct)
         {
+            /*TODO : Rishik look into Result<T> classes*/
             var validator = new CreateEnquiryRequestValidator();
             ValidationResult results = await validator.ValidateAsync(enquiryRequest, ct);
             if (!results.IsValid)

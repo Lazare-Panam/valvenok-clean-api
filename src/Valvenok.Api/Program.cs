@@ -1,6 +1,5 @@
 using Serilog;
 using Valvenok.Infrastructure;
-
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -16,6 +15,9 @@ try
     builder.Services.ConfigureDatabases(builder.Configuration);
     builder.Services.ConfigureAppHealthChecks();
     builder.Services.ConfigureAzure(builder.Configuration);
+    builder.Services.ConfigureInfraServices();
+    builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
     var app = builder.Build();
     if (app.Environment.IsDevelopment())
     {
@@ -25,6 +27,7 @@ try
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
+    app.MapReverseProxy();
     app.MapHealthChecks("/health");
     Log.Information("Server started and ready.");
     app.Run();

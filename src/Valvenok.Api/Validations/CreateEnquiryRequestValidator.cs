@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Valvenok.Api.DTO;
 
 namespace Valvenok.Core.Entities.Validations

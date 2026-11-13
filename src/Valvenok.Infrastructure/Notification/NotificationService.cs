@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Valvenok.Core.Entities.Messaging;
 using Valvenok.Core.Entities.User;
@@ -7,7 +7,7 @@ using Valvenok.Infrastructure.Data.Config.Settings;
 
 namespace Valvenok.Infrastructure.Notification
 {
-    public class NotificationService
+    public class NotificationService : INotificationService
     {
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IEmailQueuePublisher _emailQueue;
@@ -23,22 +23,8 @@ namespace Valvenok.Infrastructure.Notification
         }
         public async Task HandleNewEnquiryAsync(Enquiry enquiry, CancellationToken ct = default)
         {
-            try
-            {
-                await SendEnquiryInternalNotificationAsync(enquiry, ct);  
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to send internal enquiry notification");
-            }
-            try
-            {
-                await SendEnquiryReceiptAsync(enquiry, ct); 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to send enquiry receipt");
-            }
+            await SendEnquiryInternalNotificationAsync(enquiry, ct);
+            await SendEnquiryReceiptAsync(enquiry, ct);
         }
         private async Task SendEnquiryReceiptAsync(Enquiry enquiry, CancellationToken ct)
         {

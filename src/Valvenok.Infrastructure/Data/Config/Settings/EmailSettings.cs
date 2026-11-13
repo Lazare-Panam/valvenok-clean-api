@@ -1,4 +1,4 @@
-﻿namespace Valvenok.Infrastructure.Data.Config.Settings
+namespace Valvenok.Infrastructure.Data.Config.Settings
 {
     public class EmailSettings
     {
