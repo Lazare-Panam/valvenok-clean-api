@@ -22,15 +22,17 @@ namespace Valvenok.API.Controllers
         [HttpPost("enquiry")]
         public async Task<IActionResult> SendEnquiry([FromBody] CreateEnquiryRequest enquiryRequest, CancellationToken ct)
         {
-            /*TODO : Rishik look into Result<T> classes*/
             var validator = new CreateEnquiryRequestValidator();
-            ValidationResult results = await validator.ValidateAsync(enquiryRequest, ct);
-            if (!results.IsValid)
+            ValidationResult validationResults = await validator.ValidateAsync(enquiryRequest, ct);
+            if (!validationResults.IsValid)
             {
-                return BadRequest(results.ToDictionary());
+                return BadRequest(validationResults.ToDictionary());
             }
-
-            await _enquiryService.CreateEnquiry(enquiryRequest, ct);
+            var serviceResult = await _enquiryService.CreateEnquiry(enquiryRequest, ct);
+            if(serviceResult.IsFailure)
+            {
+                return Conflict(new { code = serviceResult.Error.Code, message = serviceResult.Error.Description });
+            }
             return Ok(new { message = "Enquiry sent successfully." });
         }
     }

@@ -13,6 +13,7 @@ using Valvenok.Infrastructure.Data.Config.Settings;
 using Valvenok.Infrastructure.Messaging;
 using Valvenok.Infrastructure.Notification;
 using Valvenok.Infrastructure.Repository;
+using Valvenok.Infrastructure.Services;
 using Valvenok.Infrastructure.Storage;
 namespace Valvenok.Infrastructure
 {
