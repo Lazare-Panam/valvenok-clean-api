@@ -17,7 +17,7 @@ namespace Valvenok.Infrastructure.Repository
 
         public async Task<CategoryContent?> GetByCategoryIdAsync(int categoryId, CancellationToken ct = default)
         {
-           return await _collection.Find(x => x.CategoryId == categoryId).FirstOrDefaultAsync(ct);
+            return await _collection.Find(x => x.CategoryId == categoryId).FirstOrDefaultAsync(ct);
         }
     }
 }

@@ -1,17 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Azure.Storage.Queues;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Valvenok.Infrastructure.Data;
-using Valvenok.Infrastructure.Settings;
 using MongoDB.Driver;
+using Valvenok.Core.Interfaces;
 using Valvenok.Core.Interfaces.Repositories;
+using Valvenok.Core.Interfaces.Users;
+using Valvenok.Infrastructure.Data;
+using Valvenok.Infrastructure.Data.Config.Settings;
+using Valvenok.Infrastructure.Messaging;
+using Valvenok.Infrastructure.Notification;
 using Valvenok.Infrastructure.Repository;
+using Valvenok.Infrastructure.Services;
+using Valvenok.Infrastructure.Storage;
 namespace Valvenok.Infrastructure
 {
     public static class Dependencies
     {
-        public static void ConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrEmpty(connectionString))
@@ -44,13 +52,53 @@ namespace Valvenok.Infrastructure
                 var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
                 return sp.GetRequiredService<IMongoClient>().GetDatabase(settings.DatabaseName);
             });
-            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
+            return services;
         }
-        public static IServiceCollection AddAppHealthChecks(this IServiceCollection services)
+        public static IServiceCollection ConfigureAppHealthChecks(this IServiceCollection services)
         {
             services.AddHealthChecks()
                     .AddMongoDb(clientFactory: sp => sp.GetRequiredService<IMongoClient>())
-                    .AddDbContextCheck<ApplicationDbContext>(); ;
+                    .AddDbContextCheck<ApplicationDbContext>();
+            return services;
+        }
+        public static IServiceCollection ConfigureAzure(this IServiceCollection services, IConfiguration configuration)
+        {
+            var storageConnection = configuration.GetSection("AzureStorage")["ConnectionString"];
+            var queueConnection = configuration.GetSection("Queue")["ConnectionString"];
+            var queueName = configuration.GetSection("Queue")["QueueName"];
+
+            if (string.IsNullOrEmpty(storageConnection))
+                throw new InvalidOperationException(
+                    "Azure Storage connection string is missing. Set 'AzureStorage:ConnectionString' in user-secrets " +
+                    "or the 'AzureStorage__ConnectionString' environment variable.");
+
+            if (string.IsNullOrEmpty(queueConnection))
+                throw new InvalidOperationException(
+                    "Queue connection string is missing. Set 'Queue:ConnectionString' in user-secrets " +
+                    "or the 'Queue__ConnectionString' environment variable.");
+            if (string.IsNullOrEmpty(queueName))
+                throw new InvalidOperationException(
+                    "Queue name is missing. Set 'Queue:QueueName' in appsettings.json.");
+
+            services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorage"));
+            services.Configure<QueueSettings>(configuration.GetSection("Queue"));
+
+            services.AddAzureClients(clientBuilder =>
+            {
+                clientBuilder.AddBlobServiceClient(storageConnection);
+                clientBuilder.AddQueueServiceClient(queueConnection).ConfigureOptions(options => options.MessageEncoding = QueueMessageEncoding.Base64);
+            });
+            services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            return services;
+        }
+        public static IServiceCollection ConfigureInfraServices(this IServiceCollection services)
+        {
+            services.AddScoped<IFileStorage, AzureBlobStorage>();
+            services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
+            services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+            services.AddScoped<IEnquiryService, EnquiryService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
             return services;
         }
     }
