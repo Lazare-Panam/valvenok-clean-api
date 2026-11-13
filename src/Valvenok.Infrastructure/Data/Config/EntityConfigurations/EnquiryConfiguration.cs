@@ -14,8 +14,8 @@ namespace Valvenok.Infrastructure.Data.Config.EntityConfigurations
             builder.Property(p => p.Message).HasMaxLength(500).IsRequired();
             builder.Property(p => p.PhoneNo).HasMaxLength(20).IsRequired();
             builder.Property(p => p.Email).HasMaxLength(254).IsRequired();
-            builder.Property(p => p.Name).HasMaxLength(50).IsRequired(false);
             builder.Property(e => e.Status).HasConversion<string>().HasMaxLength(20);
+            builder.Property(e => e.ExpectedLeadTime).HasMaxLength(200);
         }
     }
 }

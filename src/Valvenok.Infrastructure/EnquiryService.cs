@@ -28,7 +28,8 @@ namespace Valvenok.Infrastructure
                 enquiryRequest.PhoneNo,
                 enquiryRequest.AttachmentLink,
                 DateTimeOffset.UtcNow,
-                enquiryRequest.Company);
+                company: enquiryRequest.Company,
+                expectedLeadTime: enquiryRequest.ExpectedLeadTime);
 
             _dbContext.Enquiries.Add(enquiry);
             await _dbContext.SaveChangesAsync(ct);

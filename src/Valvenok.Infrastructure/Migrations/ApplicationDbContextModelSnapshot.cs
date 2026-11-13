@@ -233,12 +233,17 @@ namespace Valvenok.Infrastructure.Migrations
                         .HasMaxLength(254)
                         .HasColumnType("nvarchar(254)");
 
+                    b.Property<string>("ExpectedLeadTime")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 

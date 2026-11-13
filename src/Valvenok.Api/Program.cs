@@ -1,4 +1,5 @@
 using Serilog;
+using Valvenok.Api.Exceptions;
 using Valvenok.Infrastructure;
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -16,9 +17,11 @@ try
     builder.Services.ConfigureAppHealthChecks();
     builder.Services.ConfigureAzure(builder.Configuration);
     builder.Services.ConfigureInfraServices();
-    builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
     var app = builder.Build();
+    app.UseExceptionHandler();
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();

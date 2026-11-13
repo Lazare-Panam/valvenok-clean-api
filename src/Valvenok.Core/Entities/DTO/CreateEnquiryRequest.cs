@@ -9,5 +9,6 @@ namespace Valvenok.Api.DTO
         public string Subject { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public string Company { get; set; } = string.Empty;
+        public string ExpectedLeadTime { get; set; } = string.Empty;
     }
 }

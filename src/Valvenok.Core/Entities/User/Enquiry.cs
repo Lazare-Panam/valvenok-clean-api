@@ -12,9 +12,10 @@ namespace Valvenok.Core.Entities.User
         public string Message { get; private set; }
         public string Company { get; private set; }
         public string? AttachmentLink { get; private set; }
+        public string? ExpectedLeadTime { get; private set; }
         public EnquiryStatus Status { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
-        public Enquiry(string name, string subject, string message, string email, string phoneNo, string? attachmentLink, DateTimeOffset createdAt, string company)
+        public Enquiry(string name, string subject, string message, string email, string phoneNo, string? attachmentLink, DateTimeOffset createdAt, string company, string? expectedLeadTime)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             ArgumentException.ThrowIfNullOrWhiteSpace(email);
@@ -30,6 +31,7 @@ namespace Valvenok.Core.Entities.User
             AttachmentLink = attachmentLink;
             CreatedAt = createdAt;
             Company = company;
+            ExpectedLeadTime = expectedLeadTime;
         }
         public void MarkNotified() => Status = EnquiryStatus.Notified;
         public void MarkNotifiedFailed() => Status = EnquiryStatus.NotifyFailed;
