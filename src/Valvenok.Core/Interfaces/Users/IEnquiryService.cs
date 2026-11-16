@@ -1,4 +1,4 @@
-using Valvenok.Api.DTO;
+using Valvenok.Core.Entities.DTO;
 using Valvenok.Core.Common.Errors;
 
 namespace Valvenok.Core.Interfaces.Users

@@ -1,4 +1,4 @@
-namespace Valvenok.Api.DTO
+namespace Valvenok.Core.Entities.DTO
 {
     public record CreateEnquiryRequest
     {

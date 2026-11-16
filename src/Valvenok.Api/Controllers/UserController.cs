@@ -1,7 +1,7 @@
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Valvenok.Api.DTO;
-using Valvenok.Core.Entities.Validations;
+using Valvenok.Core.Entities.DTO;
+using Valvenok.Api.Validations;
 using Valvenok.Core.Interfaces.Users;
 
 namespace Valvenok.API.Controllers

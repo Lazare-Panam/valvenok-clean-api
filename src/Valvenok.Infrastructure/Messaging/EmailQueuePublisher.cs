@@ -1,8 +1,10 @@
 using System.Text.Json;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Valvenok.Core.Entities.Messaging;
 using Valvenok.Core.Interfaces;
+using Valvenok.Infrastructure.Data.Config.Settings;
 
 namespace Valvenok.Infrastructure.Messaging
 {
@@ -10,10 +12,9 @@ namespace Valvenok.Infrastructure.Messaging
     {
         private readonly QueueClient _queueClient;
         private readonly ILogger<EmailQueuePublisher> _logger;
-        private const string queueName = "notifications";
-        public EmailQueuePublisher(QueueServiceClient queueServiceClient, ILogger<EmailQueuePublisher> logger)
+        public EmailQueuePublisher(QueueServiceClient queueServiceClient, ILogger<EmailQueuePublisher> logger, IOptions<QueueSettings> options)
         {
-            _queueClient = queueServiceClient.GetQueueClient(queueName);
+            _queueClient = queueServiceClient.GetQueueClient(options.Value.QueueName);
             _logger = logger;
         }
         public async Task EnqueueAsync(EmailNotification message, CancellationToken ct = default)

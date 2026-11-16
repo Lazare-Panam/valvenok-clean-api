@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Valvenok.Api.DTO;
+using Valvenok.Core.Entities.DTO;
 using Valvenok.Core.Common.Errors;
 using Valvenok.Core.Entities.User;
 using Valvenok.Core.Interfaces;
