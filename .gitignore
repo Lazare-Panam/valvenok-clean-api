@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# Personal learning log (not part of the project)
+LEARNING_LOG.md
+
 # User-specific files
 *.rsuser
 *.suo

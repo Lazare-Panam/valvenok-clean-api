@@ -1,6 +1,33 @@
-@Valvenok.Api_HostAddress = http://localhost:5067
+@host = http://localhost:5067
 
-GET {{Valvenok.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Submit an enquiry (valid) -> 200, saves + queues the two emails
+POST {{host}}/api/user/enquiry
+Content-Type: application/json
 
-###
+{
+  "name": "Test User",
+  "email": "customer@example.com",
+  "phoneNo": "07123456789",
+  "subject": "Interested in ITQ valves",
+  "message": "Please send me a quote for the ITQ range.",
+  "company": "Acme Ltd"
+}
+
+### Submit an enquiry (invalid: missing email/subject) -> 400 with field errors
+POST {{host}}/api/user/enquiry
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "",
+  "phoneNo": "07123456789",
+  "subject": "",
+  "message": "hi",
+  "company": ""
+}
+
+### Health check -> 200 (served natively)
+GET {{host}}/health
+
+### A route the new backend does NOT own -> proxied to the OLD backend via YARP
+GET {{host}}/api/categories
