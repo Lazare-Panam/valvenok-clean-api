@@ -98,7 +98,7 @@ namespace Valvenok.Infrastructure
             services.AddScoped<IEmailTemplateService, EmailTemplateService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<ICategoryContentRepository, CategoryContentRepository>();
+            services.AddScoped<ICatalogPageRepository, CatalogPageRepository>();
             return services;
         }
     }

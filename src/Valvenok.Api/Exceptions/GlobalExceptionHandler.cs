@@ -7,13 +7,11 @@ namespace Valvenok.Api.Exceptions
     {
         private readonly IProblemDetailsService _problemDetailsService;
         private readonly ILogger<GlobalExceptionHandler> _logger;
-
         public GlobalExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<GlobalExceptionHandler> logger)
         {
             _problemDetailsService = problemDetailsService;
             _logger = logger;
         }
-
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             _logger.LogError(exception, "Unhandled exception processing {Path}", httpContext.Request.Path);
