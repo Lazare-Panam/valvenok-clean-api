@@ -99,6 +99,7 @@ namespace Valvenok.Infrastructure
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICatalogPageRepository, CatalogPageRepository>();
+            services.AddScoped<ICatalogService, CatalogService>();
             return services;
         }
     }

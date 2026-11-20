@@ -20,8 +20,7 @@ namespace Valvenok.Core.Entities.Content
         public Seo? Seo { get; set; }
         public CardSummary? Card { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public LandingContent? Landing { get; set; }
-        public ProductContent? Product { get; set; }
+        public List<Section> Sections { get; set; } = [];
     }
 
     public class CardSummary
@@ -30,33 +29,6 @@ namespace Valvenok.Core.Entities.Content
         public string? Image { get; set; }
         public string? Metric { get; set; }
         public string? Blurb { get; set; }
-    }
-
-    public class LandingContent
-    {
-        public Hero? Hero { get; set; }
-        public Intro? Intro { get; set; }
-        public List<Stat> Stats { get; set; } = [];
-        public PressureChart? Pressure { get; set; }
-        public List<Group> Groups { get; set; } = [];
-        public List<Benefit> Benefits { get; set; } = [];
-        public List<WhichItem> Which { get; set; } = [];
-        public List<FaqItem> Faq { get; set; } = [];
-        public Cta? Cta { get; set; }
-    }
-
-    public class ProductContent
-    {
-        public string? Brand { get; set; }
-        public string? ShortDescription { get; set; }
-        public string? Description { get; set; }
-        public List<string> Features { get; set; } = [];
-        public List<ProductImage> Images { get; set; } = [];
-        public List<SpecItem> Specs { get; set; } = [];
-        public List<VariantColumn> VariantColumns { get; set; } = [];
-        public List<ProductVariant> Variants { get; set; } = [];
-        public List<ProductDocument> Documents { get; set; } = [];
-        public List<FaqItem> Faq { get; set; } = [];
     }
 
     public class ProductImage
