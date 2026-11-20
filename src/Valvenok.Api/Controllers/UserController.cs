@@ -2,6 +2,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Valvenok.Core.Entities.DTO;
 using Valvenok.Api.Validations;
+using Valvenok.Api.Extensions;
 using Valvenok.Core.Interfaces.Users;
 
 namespace Valvenok.API.Controllers
@@ -29,9 +30,9 @@ namespace Valvenok.API.Controllers
                 return BadRequest(validationResults.ToDictionary());
             }
             var serviceResult = await _enquiryService.CreateEnquiry(enquiryRequest, ct);
-            if(serviceResult.IsFailure)
+            if(!serviceResult.IsSuccess)
             {
-                return Conflict(new { code = serviceResult.Error.Code, message = serviceResult.Error.Description });
+                return serviceResult.ToActionResult();
             }
             return Ok(new { message = "Enquiry sent successfully." });
         }
