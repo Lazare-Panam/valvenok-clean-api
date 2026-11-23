@@ -1,9 +1,26 @@
+using System.Text.Json.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Valvenok.Core.Entities.Content
 {
-    [BsonKnownTypes(
-        typeof(HeroSection), typeof(IntroSection), typeof(StatsSection),
+    // Two serializers, two discriminators:
+    //   [BsonKnownTypes] -> MongoDB read/write (uses the "_t" field in the document)
+    //   [JsonPolymorphic] -> HTTP response (emits a "type" field the frontend maps to a component)
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+    [JsonDerivedType(typeof(HeroSection), "hero")]
+    [JsonDerivedType(typeof(IntroSection), "intro")]
+    [JsonDerivedType(typeof(StatsSection), "stats")]
+    [JsonDerivedType(typeof(CirclesSection), "circles")]
+    [JsonDerivedType(typeof(ChartSection), "chart")]
+    [JsonDerivedType(typeof(CardsSection), "cards")]
+    [JsonDerivedType(typeof(BenefitsSection), "benefits")]
+    [JsonDerivedType(typeof(SelectorSection), "selector")]
+    [JsonDerivedType(typeof(ChecklistSection), "checklist")]
+    [JsonDerivedType(typeof(StandardsSection), "standards")]
+    [JsonDerivedType(typeof(BrandsSection), "brands")]
+    [JsonDerivedType(typeof(FaqSection), "faq")]
+    [JsonDerivedType(typeof(CtaSection), "cta")]
+    [BsonKnownTypes(typeof(HeroSection), typeof(IntroSection), typeof(StatsSection),
         typeof(CirclesSection), typeof(ChartSection), typeof(CardsSection),
         typeof(BenefitsSection), typeof(SelectorSection), typeof(ChecklistSection),
         typeof(StandardsSection), typeof(BrandsSection), typeof(FaqSection),

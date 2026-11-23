@@ -6,7 +6,7 @@ namespace Valvenok.Infrastructure.Repository
 {
     public class CatalogPageRepository : ICatalogPageRepository
     {
-        private const string CollectionName = "catalog-pages";
+        private const string CollectionName = "category-content";
         private readonly IMongoCollection<CatalogPage> _collection;
 
         public CatalogPageRepository(IMongoDatabase database)

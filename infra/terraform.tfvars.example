@@ -1,5 +1,8 @@
-# Copy this file to terraform.tfvars and fill in real values.
-# terraform.tfvars is gitignored — never commit real secrets.
+subscription_id = "REPLACE_ME"
 
-subscription_id = "" # your Azure subscription id
-location        = "uksouth"
+acr_password = "REPLACE_ME"
+
+mongo_conn   = "REPLACE_ME"
+sql_conn     = "REPLACE_ME"
+storage_conn = "REPLACE_ME"
+queue_conn   = "REPLACE_ME"
