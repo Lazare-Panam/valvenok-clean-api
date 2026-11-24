@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Valvenok.Core.Entities.DTO;
 using Valvenok.Core.Common.Errors;
 using Valvenok.Core.Entities.User;
@@ -12,10 +13,12 @@ namespace Valvenok.Infrastructure.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly INotificationService _notificationService;
-        public EnquiryService(ApplicationDbContext dbContext, INotificationService notificationService)
+        private readonly ILogger<EnquiryService> _logger;
+        public EnquiryService(ApplicationDbContext dbContext, INotificationService notificationService, ILogger<EnquiryService> logger)
         {
             _dbContext = dbContext;
             _notificationService = notificationService;
+            _logger = logger;
         }
         public async Task<Result> CreateEnquiry(CreateEnquiryRequest enquiryRequest, CancellationToken ct)
         {
@@ -29,7 +32,10 @@ namespace Valvenok.Infrastructure.Services
             e.CreatedAt >= cutOffTime, ct);
 
             if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate enquiry skipped (subject {Subject})", enquiryRequest.Subject);
                 return EnquiryErrors.Duplicate(enquiryRequest.Message);
+            }
 
             var enquiry = new Enquiry(
                 enquiryRequest.Name,
@@ -44,6 +50,7 @@ namespace Valvenok.Infrastructure.Services
 
             _dbContext.Enquiries.Add(enquiry);
             await _dbContext.SaveChangesAsync(ct);
+            _logger.LogInformation("Enquiry created for {Company} (subject {Subject})", enquiryRequest.Company, enquiryRequest.Subject);
             await _notificationService.HandleNewEnquiryAsync(enquiry, ct);
             return Result.Success();
         }

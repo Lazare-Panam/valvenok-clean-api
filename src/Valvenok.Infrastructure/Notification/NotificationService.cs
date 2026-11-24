@@ -23,6 +23,7 @@ namespace Valvenok.Infrastructure.Notification
         }
         public async Task HandleNewEnquiryAsync(Enquiry enquiry, CancellationToken ct = default)
         {
+            _logger.LogInformation("Dispatching enquiry notifications for {Company}", enquiry.Company);
             await SendEnquiryInternalNotificationAsync(enquiry, ct);
             await SendEnquiryReceiptAsync(enquiry, ct);
         }

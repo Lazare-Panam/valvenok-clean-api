@@ -16,6 +16,7 @@ try
     builder.Services.ConfigureAzure(builder.Configuration);
     builder.Services.ConfigureInfraServices();
     builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    builder.Services.AddApplicationInsightsTelemetry();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
     var app = builder.Build();
