@@ -1,23 +1,5 @@
 namespace Valvenok.Core.Entities.Content
 {
-    public class CategoryContent
-    {
-        public string? Id { get; set; }
-        public int CategoryId { get; set; }
-        public string Slug { get; set; } = string.Empty;
-        public Seo? Seo { get; set; }
-        public Hero? Hero { get; set; }
-        public Intro? Intro { get; set; }
-        public List<Stat> Stats { get; set; } = [];
-        public PressureChart? Pressure { get; set; }
-        public List<Group> Groups { get; set; } = [];
-        public List<Benefit> Benefits { get; set; } = [];
-        public List<WhichItem> Which { get; set; } = [];
-        public List<FaqItem> Faq { get; set; } = [];
-        public Cta? Cta { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-    }
-
     public class Seo
     {
         public string? Title { get; set; }

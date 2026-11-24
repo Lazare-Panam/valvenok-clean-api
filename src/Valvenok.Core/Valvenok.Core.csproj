@@ -10,4 +10,8 @@
     <Folder Include="Entities\Notification\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="3.13.0" />
+  </ItemGroup>
+
 </Project>

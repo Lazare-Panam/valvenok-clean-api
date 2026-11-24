@@ -1,7 +1,9 @@
 ﻿namespace Valvenok.Core.Common.Errors
 {
-    public sealed record Error(string Code, string Description)
+    public enum ErrorType
     {
-        public static readonly Error None = new(string.Empty, string.Empty);
+        NotFound,
+        Conflict
     }
+    public sealed record Error(string Code, string Description, ErrorType Type);
 }

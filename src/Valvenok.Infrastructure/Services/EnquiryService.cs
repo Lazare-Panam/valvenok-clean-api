@@ -20,7 +20,7 @@ namespace Valvenok.Infrastructure.Services
         public async Task<Result> CreateEnquiry(CreateEnquiryRequest enquiryRequest, CancellationToken ct)
         {
 
-            /*TODO: Rishik handle TOCOTU Bug (Concurrency) and look towards using one DB round trip instead of two*/
+            /*TODO: Rishik handle TOCTOU Bug (Concurrency) and look towards using one DB round trip instead of two*/
             var cutOffTime = DateTimeOffset.UtcNow.AddMinutes(-5);
             bool isDuplicate = await _dbContext.Enquiries.AnyAsync(e =>
             e.Email == enquiryRequest.Email &&
@@ -29,7 +29,7 @@ namespace Valvenok.Infrastructure.Services
             e.CreatedAt >= cutOffTime, ct);
 
             if (isDuplicate)
-                return Result.Failure(EnquiryErrors.Duplicate);
+                return EnquiryErrors.Duplicate(enquiryRequest.Message);
 
             var enquiry = new Enquiry(
                 enquiryRequest.Name,

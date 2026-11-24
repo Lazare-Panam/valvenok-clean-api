@@ -2,8 +2,7 @@
 {
     public static class EnquiryErrors
     {
-        public static readonly Error Duplicate = new(
-            "Enquiry.Duplicate",
-            "An identical enquiry was submitted moments ago. Please wait before trying again.");
+        public static Error Duplicate(string message) =>
+        new("Enquiry.Exists", $"enquiry with message {message} already exists", ErrorType.Conflict);
     }
 }

@@ -1,0 +1,12 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: src/Valvenok.Api/Dockerfile
+    image: valvenok-api:local
+    ports:
+      - "5067:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
+

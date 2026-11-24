@@ -1,41 +1,21 @@
-# Root Terraform config for Valvenok infrastructure.
+# Terraform for the "valvenok-clean" Container App — the strangler-fig front door.
+# It REUSES the existing Container Apps environment and the existing ACR; Mongo,
+# SQL and Storage already exist, so this file only stands up the new app.
+#
+#   terraform init
+#   terraform plan
+#   terraform apply
+#
+# Secrets are fed from terraform.tfvars (git-ignored). NOTE: secret values land in
+# terraform state — use a secure remote backend before this is more than a POC.
 
-terraform {
-  required_version = ">= 1.1.0"
-
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 4.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-  subscription_id = var.subscription_id
-}
+# Resource group for the clean stack's app.
 resource "azurerm_resource_group" "rg" {
   name     = "rg-valvenok-clean"
   location = var.location
 }
 
-data "azurerm_mssql_server" "existing" {
-  name                = var.sql_server_name
-  resource_group_name = var.sql_server_resource_group
-}
+# Reuse the EXISTING Container Apps environment (do not create a new one).
 
-resource "azurerm_mssql_database" "db" {
-  name        = var.sql_database_name
-  server_id   = data.azurerm_mssql_server.existing.id
-  sku_name    = "Basic"
-  max_size_gb = 2
-  collation   = "SQL_Latin1_General_CP1_CI_AS"
-  storage_account_type = "Local"
-}
-resource "azurerm_mssql_firewall_rule" "example" {
-  name             = "FirewallRuleValvenokDB"
-  server_id        = data.azurerm_mssql_server.existing.id
-  start_ip_address = "0.0.0.0"
-  end_ip_address   = "255.255.255.255"
-}
+# The new front-door API container app.
+

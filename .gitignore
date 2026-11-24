@@ -9,6 +9,9 @@
 # Personal learning log (not part of the project)
 LEARNING_LOG.md
 
+# Seed data — kept local for now, versioned later
+seed/
+
 # User-specific files
 *.rsuser
 *.suo
