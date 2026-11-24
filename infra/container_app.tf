@@ -2,8 +2,6 @@ data "azurerm_container_app_environment" "existing" {
   name                = var.container_app_environment_name
   resource_group_name = var.container_app_environment_rg
 }
-
-
 resource "azurerm_container_app" "api" {
   name                         = var.app_name
   resource_group_name          = azurerm_resource_group.rg.name
@@ -36,11 +34,14 @@ resource "azurerm_container_app" "api" {
     name  = "storage"
     value = var.storage_conn
   }
+   secret {
+    name  = "appinsights"
+    value = azurerm_application_insights.main.connection_string
+  }
   secret {
     name  = "queue"
     value = var.queue_conn
   }
-
   ingress {
     external_enabled = true
     target_port      = 8080
@@ -61,7 +62,6 @@ resource "azurerm_container_app" "api" {
       image  = var.image
       cpu    = 0.5
       memory = "1Gi"
-
       env {
         name  = "ASPNETCORE_ENVIRONMENT"
         value = "Production"
@@ -90,8 +90,11 @@ resource "azurerm_container_app" "api" {
         name  = "Queue__QueueName"
         value = var.queue_name
       }
+      env {
+        name        = "APPLICATIONINSIGHTS_CONNECTION_STRING"
+        secret_name = "appinsights"
+      }
     }
-
     http_scale_rule {
       name                = "http-scale"
       concurrent_requests = "100"

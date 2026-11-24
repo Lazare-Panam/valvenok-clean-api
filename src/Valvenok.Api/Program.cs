@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.Extensibility;
 using Serilog;
 using Valvenok.Api.Exceptions;
 using Valvenok.Infrastructure;
