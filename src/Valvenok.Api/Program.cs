@@ -9,7 +9,12 @@ try
 {
     Log.Information("Starting server.");
     var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddSerilog((services, lc) => lc.ReadFrom.Configuration(builder.Configuration).ReadFrom.Services(services));
+    builder.Services.AddSerilog((services, lc) => lc
+    .ReadFrom.Configuration(builder.Configuration)
+    .ReadFrom.Services(services)
+    .WriteTo.ApplicationInsights(
+        services.GetRequiredService<TelemetryConfiguration>(),
+        TelemetryConverter.Traces));
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
     builder.Services.ConfigureDatabases(builder.Configuration);
