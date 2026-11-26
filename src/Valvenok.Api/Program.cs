@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.Extensibility;
 using Serilog;
 using Valvenok.Api.Exceptions;
 using Valvenok.Infrastructure;
@@ -8,7 +9,12 @@ try
 {
     Log.Information("Starting server.");
     var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddSerilog((services, lc) => lc.ReadFrom.Configuration(builder.Configuration).ReadFrom.Services(services));
+    builder.Services.AddSerilog((services, lc) => lc
+    .ReadFrom.Configuration(builder.Configuration)
+    .ReadFrom.Services(services)
+    .WriteTo.ApplicationInsights(
+        services.GetRequiredService<TelemetryConfiguration>(),
+        TelemetryConverter.Traces));
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
     builder.Services.ConfigureDatabases(builder.Configuration);
@@ -16,6 +22,7 @@ try
     builder.Services.ConfigureAzure(builder.Configuration);
     builder.Services.ConfigureInfraServices();
     builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    builder.Services.AddApplicationInsightsTelemetry();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
     var app = builder.Build();

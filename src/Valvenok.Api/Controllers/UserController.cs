@@ -34,6 +34,7 @@ namespace Valvenok.API.Controllers
             {
                 return serviceResult.ToActionResult();
             }
+            _logger.LogInformation("Enquiry submitted for {Company}", enquiryRequest.Company);
             return Ok(new { message = "Enquiry sent successfully." });
         }
     }
